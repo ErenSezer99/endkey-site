@@ -1,0 +1,19 @@
+# Supabase ücretsiz planı 7 gün trafiksiz kalan projeyi uyutur.
+# Bu zamanlama haftada iki kez skor tablosunu çağırarak projeyi uyanık tutar.
+name: Supabase keep-alive
+on:
+  schedule:
+    - cron: "0 9 * * 1,4" # Pazartesi ve Perşembe 09:00 UTC
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skor tablosunu çağır
+        run: |
+          curl -sf -X POST "https://xoxyohdwulcjpvtpiiku.supabase.co/rest/v1/rpc/get_global" \
+            -H "apikey: sb_publishable_P0bxd3xNFXTOEjl8QCu7jw_WkzYAYtT" \
+            -H "Authorization: Bearer sb_publishable_P0bxd3xNFXTOEjl8QCu7jw_WkzYAYtT" \
+            -H "Content-Type: application/json" \
+            -d '{"p_device_key":"00000000-0000-0000-0000-000000000000"}' > /dev/null
+          echo "Supabase uyanık ✓"
